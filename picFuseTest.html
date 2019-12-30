@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./myplugins/pictureFuse.js"></script>
+  <div id="content" style="width:695px;height:630px"></div>
+  <button onclick="refresh()">随机设置容器宽高</button>
+  <script>
+    var src = [];
+    for (var i = 0; i < 20; i++) {
+      src[i] = `./imgs/${i+1}.jpg`
+    }
+
+    function refresh() {
+      Math.randomEx = function (lower, upper) {
+        let choice = upper - lower + 1;
+        return Math.floor(Math.random() * choice + lower)
+      }
+      let width = Math.randomEx(300, 1000)
+      let height = Math.randomEx(300, 1000)
+      $.pictureFuse({
+        id: '#content',
+        src,
+        width:695,
+        height:630
+      })
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./js/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="draw-canvas" style="text-align: center;">
+    <button id="saveCanvas">下载图片</button>
+    字号大小<select name="fontSize" id="fontSize" onchange="fontChange()">
+      <option value="9px">9px</option>
+      <option value="10px">10px</option>
+      <option value="11px">11px</option>
+      <option value="12px">12px</option>
+      <option value="13px">13px</option>
+      <option value="14px">14px</option>
+      <option value="15px">15px</option>
+      <option value="16px" selected>16px</option>
+      <option value="17px">17px</option>
+      <option value="18px">18px</option>
+      <option value="19px">19px</option>
+      <option value="20px">20px</option>
+      <option value="21px">21px</option>
+      <option value="25px">25px</option>
+      <option value="30px">30px</option>
+      <option value="40px">40px</option>
+    </select>
+    字体<select name="fontFamily" id="fontFamily" onchange="fontChange()">
+      <option value="PMingLiU">新細明體</option>
+      <option value="MingLiU">細明體</option>
+      <option value="DFKai-SB">標楷體</option>
+      <option value="SimHei">黑体</option>
+      <option value="NSimSun">新宋体</option>
+      <option value="FangSong">仿宋</option>
+      <option value="KaiTi">楷体</option>
+      <option value="FangSong_GB2312">仿宋_GB2312</option>
+      <option value="KaiTi_GB2312">楷体_GB2312</option>
+      <option value="Microsoft JhengHei">微軟正黑體</option>
+      <option value="Microsoft YaHei" selected>微软雅黑体</option>
+    </select>
+    字体加粗<input type="checkbox" id="textWeight" onchange="fontChange()">
+    字体倾斜<input type="checkbox" id="textItalic" onchange="fontChange()">
+    字体颜色<input type="color" id="textColor" value="#000" onchange="fontChange()">
+    字体预览：<p id="preview"
+      style="display: inline-block;margin-left: 20px;border: 1px solid #000;padding:10px 10px;position: absolute;margin:0">
+      预览字体</p>
+    <br style="margin-bottom:80px">
+  </div>
+
+  <script>
+    // 字体样式
+    var font = '';
+    // 字体样式发生改变的监听事件
+    function fontChange() {
+      // 获取 dom 元素对应的属性值
+      var fontStyle = _$('textItalic').checked ? 'italic' : 'normal';
+      var fontWeight = _$('textWeight').checked ? 'bold' : 'normal';
+      var fontSize = _$('fontSize').value;
+      var fontFamily = _$('fontFamily').value;
+      var fontColor = _$('textColor').value;
+      font = `${fontStyle} ${fontWeight} ${fontSize} ${fontFamily}`
+      // 修改预览字体颜色
+      $('#preview').css('font', font).css('color', fontColor);
+      // 修改画布样式
+      ctx.font = font;
+      ctx.fillStyle = fontColor;
+
+      function _$(id) {
+        return document.getElementById(id);
+      }
+    }
+
+    var canvas = null;
+    var ctx = null;
+
+    var img = new Image();
+    // 解决跨域
+    img.setAttribute("crossOrigin", 'Anonymous');
+    img.src = './imgs/geoImg.png';
+    // 当图片渲染完毕后
+    img.onload = function () {
+      $('.draw-canvas').append(
+        `<canvas id="targetCanvas" width=${this.width + 80} height=${this.height + 140} style="background-color: #F5F5F5;margin-top: 80px;"></canvas>`
+      )
+
+      canvas = document.getElementById('targetCanvas');
+      ctx = canvas.getContext('2d');
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.drawImage(img, 40, 80);
+
+      // 经过计算后创建三个按钮，输入标签按钮，输入描述按钮，输入时间按钮
+
+      fontChange();
+
+      // 标题坐标 canvas.width/2, 30，center
+      // 描述坐标 80, img.height + 96 left
+      // 时间坐标 40 + img.width,img.height + 96 right
+      // 创建三个按钮定位到各自位置
+      $('body').append(
+          `<button id="btnTitle" style="position:absolute;left:${canvas.offsetLeft+canvas.width/2-40}px;top:${canvas.offsetTop+30}px">请输入标题</button>`
+        )
+        .append(
+          `<button id="btnTip" style="position:absolute;left:${canvas.offsetLeft+40}px;top:${canvas.offsetTop+this.height + 96}px">请输入描述</button>`
+        )
+        .append(
+          `<button id="btnTime" style="position:absolute;left:${canvas.offsetLeft-40 + this.width}px;top:${canvas.offsetTop+this.height + 96}px">请输入时间</button>`
+        )
+
+      // 为三个按钮添加点击产生输入框的事件
+      $('#btnTitle').click(function () {
+        // 创建文本框
+        if ($('.editTitle').length) {
+          $('.editTitle').remove();
+        }
+
+        $('body').append(
+          `<input type="text" class="editTitle" style="${this.style.cssText}"/>`
+        )
+        $('.editTitle')[0].focus();
+        $('.editTitle').on('blur', function () {
+          var text = this.value;
+          if (text.trim()) {
+            ctx.textAlign = 'center';
+            ctx.fillText(text, canvas.width / 2, 30);
+            $('#btnTitle').remove();
+          }
+          $(this).remove();
+        })
+      })
+      $('#btnTip').click(function () {
+        // 创建文本框
+        if ($('.btnTip').length) {
+          $('.btnTip').remove();
+        }
+
+        $('body').append(
+          `<input type="text" class="btnTip" style="${this.style.cssText}"/>`
+        )
+        $('.btnTip')[0].focus();
+        $('.btnTip').on('blur', function () {
+          var text = '描述：' + this.value;
+          if (this.value.trim()) {
+            ctx.textAlign = 'left';
+            ctx.fillText(text, 40, img.height + 96);
+            $('#btnTip').remove();
+          }
+          $(this).remove();
+        })
+      })
+      $('#btnTime').click(function () {
+        // 创建文本框
+        if ($('.btnTime').length) {
+          $('.btnTime').remove();
+        }
+
+        $('body').append(
+          `<input type="text" class="btnTime" style="${this.style.cssText}"/>`
+        )
+        $('.btnTime')[0].focus();
+        $('.btnTime').on('blur', function () {
+          var text = '时间：' + this.value;
+          if (this.value.trim()) {
+            ctx.textAlign = 'right';
+            ctx.fillText(text, 40 + img.width, img.height + 96);
+            $('#btnTime').remove();
+          }
+          $(this).remove();
+        })
+      })
+
+      /*
+       * 为 canvas 添加鼠标点击事件，点击 canvas 时获取当前在 canvas 的坐标
+       * 并创建一个文本输入框，当输入完毕后按下回车就将文本画到 canvas
+       */
+      $('#targetCanvas').on('click', function (e) {
+        // 当前相对于画布的坐标
+        var canvas_x = e.offsetX;
+        var canvas_y = e.offsetY;
+        // 获取当前屏幕坐标
+        var screen_x = e.clientX;
+        var screen_y = e.clientY;
+
+
+      })
+    }
+
+    $('#saveCanvas').click(async function () {
+      if (canvas) {
+        // 解决 a标签 Not allowed to navigate top frame to data URL
+        let blob = await new Promise(resolve => canvas.toBlob(resolve));
+        let url = URL.createObjectURL(blob);
+        // Won't work here, because
+        // "the request was made in a sandboxed frame whose 'allow-popups' permission is not set."
+        // 打开新窗口
+        // window.open(url);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = '';
+        a.click();
+        a.remove();
+
+        // canvas.toDataURL 一定要在服务器上运行，推荐使用 vscode 的 liveServer 插件快速开启一个服务
+        // $('body').append(`<a href="${canvas.toDataURL('image/png')}" id="downImg">aaa</a>`)
+      }
+    })
+  </script>
+</body>
+
+</html>
