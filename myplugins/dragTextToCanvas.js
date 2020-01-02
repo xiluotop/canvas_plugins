@@ -25,7 +25,7 @@ jQuery || require('jQuery');
     // 当图片渲染完毕后
     img.onload = function () {
       $(id).append(
-        `<canvas id="targetCanvas" width=${this.width + 80} height=${this.height + 140} style="margin-top: 80px;"></canvas>`
+        `<canvas id="targetCanvas" width=${this.width + 80} height=${this.height + 140} ></canvas>`
       )
 
       canvas = document.getElementById('targetCanvas');

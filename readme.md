@@ -31,14 +31,15 @@
     /**
     * 
     * @param {
-    *  id: number,      // 图片融合的容器 id，必选
+    *  id: string,      // 图片融合的容器 id 选择器，必选
     *  src: Array,    // 图片资源，必选
     *  width: number,    // 容器宽度，必选
-    *  height: number,   // 容器高度，可选
+    *  height: number,   // 容器高度，必选
+    *  picWidth: number, // 图片高度，必填
+    *  picHeight: number,// 图片宽度，选填
     * } options 
     * 
-    * @notes : 根据提供的资源融合成一个大的图片，未指定容器
-    *          高度时将默认设置图片的高度等于宽度。
+    * @notes : 根据提供的资源融合成一个大的图片。
     */
     function pictureFuse(options)
     ```
@@ -55,26 +56,25 @@
     <!-- 当点击按钮时重新改变容器大小 -->
     <button onclick="refresh()">随机设置容器宽高</button>
     <script>
-        var src = []; // 图片资源地址集合
-        for(var i=0;i<20;i++){
-            src[i] = `./imgs/${i+1}.jpg`
+        var src = [];
+        for (var i = 0; i < 20; i++) {
+          src[i] = `./imgs/1.jpg`
         }
 
-        function refresh() {
-            Math.randomEx = function (lower, upper) {
-                let choice = upper - lower + 1;
-                return Math.floor(Math.random() * choice + lower)
-            }
-            let width = Math.randomEx(300,1000)
-            let height = Math.randomEx(300,1000)
-            // 调用融合接口
-            $.pictureFuse({
-                id: '#content',
-                src,
-                width,
-                height
-            })
+        Math.randomEx = function (lower, upper) {
+          let choice = upper - lower + 1;
+          return Math.floor(Math.random() * choice + lower)
         }
+        let width = Math.randomEx(4096, 4096)
+        let height = Math.randomEx(2160, 2160)
+        $.pictureFuse({
+          id: '#content',
+          src,
+          width: 1920 * 5,
+          height: 1200 * 4,
+          picWidth: 1920,
+          picHeight: 1200,
+        })
     </script>
     </body>
     ```

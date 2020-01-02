@@ -11,28 +11,27 @@
 <body>
   <script src="./js/jquery.min.js"></script>
   <script src="./myplugins/pictureFuse.js"></script>
-  <div id="content" style="width:695px;height:630px"></div>
-  <button onclick="refresh()">随机设置容器宽高</button>
+  <div id="content"></div>
   <script>
     var src = [];
     for (var i = 0; i < 20; i++) {
-      src[i] = `./imgs/${i+1}.jpg`
+      src[i] = `./imgs/1.jpg`
     }
 
-    function refresh() {
-      Math.randomEx = function (lower, upper) {
-        let choice = upper - lower + 1;
-        return Math.floor(Math.random() * choice + lower)
-      }
-      let width = Math.randomEx(300, 1000)
-      let height = Math.randomEx(300, 1000)
-      $.pictureFuse({
-        id: '#content',
-        src,
-        width:695,
-        height:630
-      })
+    Math.randomEx = function (lower, upper) {
+      let choice = upper - lower + 1;
+      return Math.floor(Math.random() * choice + lower)
     }
+    let width = Math.randomEx(4096, 4096)
+    let height = Math.randomEx(2160, 2160)
+    $.pictureFuse({
+      id: '#content',
+      src,
+      width: 1920 * 5,
+      height: 1200 * 4,
+      picWidth: 1920,
+      picHeight: 1200,
+    })
   </script>
 </body>
 
