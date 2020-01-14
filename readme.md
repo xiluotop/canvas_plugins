@@ -1,20 +1,59 @@
-
-
 # Canvas Plugins 插件开发日志
 
 ## pictureFuse 图片融合
 
 > 目标：可以使任意多的图片碎片融合成一个大的 Img 可以根据需求引入第三方插件将其导出
 
-### 19/12/19
+## dragTextToCanvas 编辑文字到画板插件开发
 
-* jQuery 插件扩展方式
+> 目标：可以在 canvas 画板上通过文字设定然后画到 canvas 面板上
 
-  ```JavaScript
-  $.extend({
-    pictureFuse
+### 20/1/14
+
+* 添加图片合成功能的回调函数，当图片合成后可以选择使用回调函数做相应的功能
+* 代码如下：
+
+  ```javascript
+  $.pictureFuse(potions,function(img){
+    console.log(img); // 打印最后合成图片的 DOM 对象
   })
   ```
+
+### 19/12/27
+
+* 已经完成该插件的画图功能
+
+* 示例代码如下：
+
+  ```javascript
+  $.drawTextCanvasToPic('#box', './imgs/9.jpg')
+  /**
+     * @param {*} id  需要操作的 dom 容器
+     * @param {*} src 传入图片的一个地址自动生成一个画布可以编辑标题等内容
+     * @note 该函数生成的画布 canvas 类名为 targetCanvas
+     */
+    function drawTextCanvasToPic(id, src)
+  ```
+
+### 19/12/23
+
+* 实现图片合成，将多个 Img 拼成一个个 canvas 再由 canvas 拼成整个 canvas，最后使用插件将 canvas 把 word 导出
+
+* 所需其他插件
+
+  * FileSaver.js
+
+  * jquery.wordexport.js
+
+  * 示例代码如下：
+
+    ```javaScript
+    $(function () {
+        $("input[type='button']").click(function (event) {
+            $(".main").wordExport('word文档');
+        });
+    })
+    ```
 
 ### 19/12/20
 
@@ -79,44 +118,12 @@
     </body>
     ```
 
-### 19/12/23
+### 19/12/19
 
-* 实现图片合成，将多个 Img 拼成一个个 canvas 再由 canvas 拼成整个 canvas，最后使用插件将 canvas 把 word 导出
+* jQuery 插件扩展方式
 
-* 所需其他插件
-
-  * FileSaver.js
-
-  * jquery.wordexport.js
-
-  * 示例代码如下：
-
-    ```javaScript
-    $(function () {
-        $("input[type='button']").click(function (event) {
-            $(".main").wordExport('word文档');
-        });
-    })
-    ```
-
-    
-
-## dragTextToCanvas 编辑文字到画板插件开发
-
-> 目标：可以在 canvas 画板上通过文字设定然后画到 canvas 面板上
-
-### 19/12/27
-
-* 已经完成该插件的画图功能
-
-* 示例代码如下：
-
-  ```javascript
-  $.drawTextCanvasToPic('#box', './imgs/9.jpg')
-  /**
-     * @param {*} id  需要操作的 dom 容器
-     * @param {*} src 传入图片的一个地址自动生成一个画布可以编辑标题等内容
-     * @note 该函数生成的画布 canvas 类名为 targetCanvas
-     */
-    function drawTextCanvasToPic(id, src)
+  ```JavaScript
+  $.extend({
+    pictureFuse
+  })
   ```

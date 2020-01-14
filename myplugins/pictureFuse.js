@@ -8,17 +8,18 @@ jQuery || require('jQuery');
   /**
    * 
    * @param {
-   *  id: number,      // 图片融合的容器 id，必选
-   *  src: Array,    // 图片资源，必选
-   *  width: number,    // 容器宽度，必选
-   *  height: number,   // 容器高度，必填
-   *  picWidth: number, // 图片高度，必填
-   *  picHeight: number,// 图片宽度，选填
+   *  id: number,       图片融合的容器 id，必选
+   *  src: Array,       图片资源，必选
+   *  width: number,    容器宽度，必选
+   *  height: number,   容器高度，必填
+   *  picWidth: number, 图片高度，必填
+   *  picHeight: number,图片宽度，选填
    * } options 
+   * @param {Function} callback 回调函数，传入的参数是合成后的 img DOM 对象
    * 
    * @notes : 根据提供的资源融合成一个大的图片
    */
-  function pictureFuse(options) {
+  function pictureFuse(options,callback) {
     if (!options) {
       console.log('合成失败，请检查参数！')
     }
@@ -84,6 +85,7 @@ jQuery || require('jQuery');
         $(id).append(resImg);
         $(`#resImg${c_id}`).attr("src",$(`#canvas_${c_id}`)[0].toDataURL("image/png"))
         $(`#canvas_${c_id}`).remove();
+        callback && callback($(`#resImg${c_id}`)[0]);
       }
     })
 

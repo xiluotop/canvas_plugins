@@ -6,8 +6,8 @@ jQuery || require('jQuery');
 (function ($) {
 
   /**
-   * @param {*} id  需要操作的 dom 容器
-   * @param {*} src 传入图片的一个地址自动生成一个画布可以编辑标题等内容
+   * @param {String} id  需要操作的 dom 选择器
+   * @param {String} src 传入图片的一个地址自动生成一个画布可以编辑标题等内容
    * @note 该函数生成的画布 canvas 类名为 targetCanvas
    */
   function drawTextCanvasToPic(id, src) {
