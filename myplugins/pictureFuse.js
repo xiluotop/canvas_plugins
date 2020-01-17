@@ -88,14 +88,6 @@ jQuery || require('jQuery');
         callback && callback($(`#resImg${c_id}`)[0]);
       }
     })
-
-    // window.addEventListener('load', function () {
-    //   var time = +new Date();
-    //   $(`.${imgClass}`).each((index, elm) => {
-
-    //   })
-    //   $(`.${imgClass}`).remove();
-    // })
   }
 
   $.extend({
